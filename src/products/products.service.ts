@@ -24,26 +24,24 @@ export class ProductsService {
       price: product.price,
     })) /*  as Product[] */;
   }
+
   async getProduct(productId: string) {
-    const product = await this.findProduct(productId);
-    return product;
+    const { id, description, title, price } = await this.findProduct(productId);
+    return { id, description, title, price };
   }
-  /*   updateProduct(
+
+  async updateProduct(
     productId: string,
     title: string,
     description: string,
     price: number
   ) {
-    const [product, index] = this.findProduct(productId);
-    const updateProduct = this.unNullObj({
-      productId,
-      title,
-      description,
-      price,
-    });
-    this.products[index] = { ...product, ...updateProduct };
-    return this.products[index];
-  } */
+    let updatedProduct = await this.findProduct(productId);
+    const noNulls = this.unNullObj({ productId, title, description, price });
+    updatedProduct = Object.assign(updatedProduct, noNulls);
+    updatedProduct.save();
+    return updatedProduct;
+  }
 
   /*  deleteProduct(productId: string) {
     const [product, index] = this.findProduct(productId);
@@ -61,12 +59,7 @@ export class ProductsService {
     if (!product) {
       throw new NotFoundException('Could not Find the Product');
     }
-    return {
-      id: product.id,
-      title: product.title,
-      description: product.description,
-      price: product.price,
-    };
+    return product;
   }
 
   private unNullObj(obj: {}) {

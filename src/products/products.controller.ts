@@ -45,12 +45,12 @@ export class ProductsController {
     @Body('description') prodDesc: string,
     @Body('price') prodPrice: number
   ) {
-   /*  return this.productsService.updateProduct(
+    return this.productsService.updateProduct(
       prodId,
       prodTitle,
       prodDesc,
       prodPrice
-    ); */
+    );
   }
   @Delete(':id')
   deleteProduct(@Param('id') prodId: string) {
